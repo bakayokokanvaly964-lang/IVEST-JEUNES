@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plateforme Jeunes Talents & Investisseurs</title>
+    <!-- Tailwind CSS (via CDN pour la simplicité) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+    <!-- Navigation (Masquée au départ, visible après inscription) -->
+    <nav id="navbar" class="hidden bg-white shadow-md fixed top-0 w-full z-10">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-indigo-600">TalentInvest</h1>
+            <div class="space-x-4">
+                <button onclick="showPage('projet')" class="hover:text-indigo-600 font-medium">1. Mon Projet</button>
+                <button onclick="showPage('galerie')" class="hover:text-indigo-600 font-medium">2. Galerie Media</button>
+                <button onclick="showPage('discussion')" class="hover:text-indigo-600 font-medium">3. Discussion</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto mt-20 p-6">
+
+        <!-- ÉTAPE 1 : PAGE D'INSCRIPTION -->
+        <section id="page-inscription" class="bg-white p-8 rounded-lg shadow-md max-w-md mx-auto">
+            <h2 class="text-2xl font-bold mb-6 text-center text-indigo-600">Inscription</h2>
+            <form id="form-inscription" onsubmit="handleInscription(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Nom complet</label>
+                    <input type="text" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-indigo-500" placeholder="Ex: Jean Dupont">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Adresse Email</label>
+                    <input type="email" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-indigo-500" placeholder="exemple@mail.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Rôle</label>
+                    <select required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-indigo-500">
+                        <option value="talent">Jeune Talent</option>
+                        <option value="investisseur">Investisseur</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded font-semibold hover:bg-indigo-700 transition">S'inscrire</button>
+            </form>
+        </section>
+
+        <!-- ÉTAPE 2 : DESCRIPTION DU PROJET -->
+        <section id="page-projet" class="hidden bg-white p-8 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold mb-4 text-indigo-600">Présentation du Projet</h2>
+            <form onsubmit="event.preventDefault(); showPage('galerie');" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Titre du Projet</label>
+                    <input type="text" placeholder="Titre de votre projet" class="w-full border border-gray-300 rounded px-3 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Objectif & Description</label>
+                    <textarea rows="4" placeholder="Décrivez votre projet en détail..." class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Budget recherché (€)</label>
+                    <input type="number" placeholder="5000" class="w-full border border-gray-300 rounded px-3 py-2">
+                </div>
+                <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded font-semibold hover:bg-indigo-700">Enregistrer et passer à la Galerie</button>
+            </form>
+        </section>
+
+        <!-- ÉTAPE 3 : PRÉSENTATION DES PHOTOS ET VIDÉOS -->
+        <section id="page-galerie" class="hidden bg-white p-8 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold mb-4 text-indigo-600">Galerie Médias du Projet</h2>
+            
+            <!-- Formulaire d'envoi -->
+            <div class="mb-6 p-4 border border-dashed border-indigo-300 rounded bg-indigo-50">
+                <label class="block text-sm font-medium mb-2">Ajouter des photos ou vidéos</label>
+                <input type="file" multiple accept="image/*,video/*" class="mb-2">
+                <p class="text-xs text-gray-500">Formats acceptés : PNG, JPG, MP4</p>
+            </div>
+
+            <!-- Affichage des éléments -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="border rounded p-2">
+                    <img src="https://via.placeholder.com/400x250" alt="Exemple photo" class="w-full h-48 object-cover rounded">
+                    <p class="text-sm mt-2 font-medium">Prototype / Démo Photo</p>
+                </div>
+                <div class="border rounded p-2">
+                    <div class="w-full h-48 bg-gray-200 rounded flex items-center justify-center">
+                        <span class="text-gray-500">[Aperçu Vidéo de présentation]</span>
+                    </div>
+                    <p class="text-sm mt-2 font-medium">Vidéo de pitch</p>
+                </div>
+            </div>
+
+            <button onclick="showPage('discussion')" class="bg-indigo-600 text-white px-6 py-2 rounded font-semibold hover:bg-indigo-700">Accéder à l'espace Discussion</button>
+        </section>
+
+        <!-- ÉTAPE 4 : DISCUSSION AVEC LES INVESTISSEURS -->
+        <section id="page-discussion" class="hidden bg-white p-8 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold mb-4 text-indigo-600">Espace de Discussion</h2>
+            
+            <!-- Zone de messagerie -->
+            <div id="chat-box" class="h-64 border border-gray-200 rounded p-4 overflow-y-auto space-y-3 bg-gray-50 mb-4">
+                <div class="bg-indigo-100 p-3 rounded-lg max-w-xs">
+                    <p class="text-xs text-indigo-800 font-bold">Investisseur - Marc D.</p>
+                    <p class="text-sm">Bonjour ! Votre projet semble très prometteur. Quel est votre modèle économique ?</p>
+                </div>
+                <div class="bg-white p-3 rounded-lg max-w-xs ml-auto border text-right">
+                    <p class="text-xs text-gray-500 font-bold">Vous (Jeune Talent)</p>
+                    <p class="text-sm">Bonjour Marc, merci ! Nous fonctionnons sous forme d'abonnement mensuel.</p>
+                </div>
+            </div>
+
+            <!-- Formulaire d'envoi de message -->
+            <form onsubmit="sendMessage(event)" class="flex gap-2">
+                <input type="text" id="message-input" required placeholder="Écrivez votre message aux investisseurs..." class="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-indigo-500">
+                <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded font-semibold hover:bg-indigo-700">Envoyer</button>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Script JavaScript pour la logique SPA -->
+    <script>
+        // Fonction pour changer de page sans recharger
+        function showPage(pageId) {
+            // Liste de toutes les sections
+            const pages = ['page-inscription', 'page-projet', 'page-galerie', 'page-discussion'];
+            
+            // Masquer toutes les pages
+            pages.forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+
+            // Afficher la page demandée
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+        }
+
+        // Soumission du formulaire d'inscription
+        function handleInscription(event) {
+            event.preventDefault();
+            // Affiche la navbar une fois inscrit
+            document.getElementById('navbar').classList.remove('hidden');
+            // Redirige vers la page de projet
+            showPage('projet');
+        }
+
+        // Simuler l'envoi d'un message dans la discussion
+        function sendMessage(event) {
+            event.preventDefault();
+            const input = document.getElementById('message-input');
+            const text = input.value;
+            
+            if (text.trim() !== "") {
+                const chatBox = document.getElementById('chat-box');
+                const newMessage = document.createElement('div');
+                newMessage.className = "bg-white p-3 rounded-lg max-w-xs ml-auto border text-right";
+                newMessage.innerHTML = `
+                    <p class="text-xs text-gray-500 font-bold">Vous</p>
+                    <p class="text-sm">${text}</p>
+                `;
+                chatBox.appendChild(newMessage);
+                chatBox.scrollTop = chatBox.scrollHeight;
+                input.value = "";
+            }
+        }
+    </script>
+</body>
+</html>
